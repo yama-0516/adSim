@@ -1,8 +1,3 @@
-# Tomcatの公式イメージを使用
-FROM tomcat:9.0-jdk17-temurin
-
-# WARファイルをTomcatのwebappsディレクトリにコピー
+FROM tomcat:9.0-jdk21-temurin
 COPY ROOT.war /usr/local/tomcat/webapps/
-
-# ポート8080を公開
 EXPOSE 8080
