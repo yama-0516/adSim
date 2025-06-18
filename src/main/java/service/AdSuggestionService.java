@@ -3,6 +3,7 @@ package service;
 import model.SurveyForm;
 
 
+
 public class AdSuggestionService {
     public static class SuggestionResult {
         private String suggestion;         // おすすめ媒体
