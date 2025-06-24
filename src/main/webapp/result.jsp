@@ -62,6 +62,13 @@
         margin-top: 0.5em;
         display: inline-block;
       }
+
+      .consult-support-block {
+        display: none;
+      }
+      .consult-support-block.active {
+        display: block;
+      }
     </style>
 	<script>
   // CVRのデフォルト値（％）
@@ -97,6 +104,7 @@
 
     if (!focus || !budgetInput.value || !unitPriceInput.value) {
       resultDiv.innerHTML = "<span style='color:#b71c1c;'>すべての項目を入力してください。</span>";
+      document.getElementById("consult-support").classList.remove("active");
       return;
     }
     var budget = parseInt(budgetInput.value, 10);
@@ -134,6 +142,7 @@
       "<span style='font-size:0.9em;'>（客単価：" + unitPrice.toLocaleString() + "円、CTR：" + (ctr*100).toFixed(1) + "%、CPM：" + cpm.toLocaleString() + "円、CPC：" + cpc.toLocaleString() + "円）</span><br>" +
       "<span style='font-size:0.9em;color:#888;'>※CVR（成約率）は選択指標に応じて自動設定：" + convRate.toFixed(2) + "%</span>" +
       "</div>";
+    document.getElementById("consult-support").classList.add("active");
   }
 
   // ラジオボタン変更時にCVRの注釈を即反映（任意）
@@ -148,6 +157,7 @@
   }
 
 	</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
 <div class="container">
@@ -188,8 +198,8 @@
     	<input type="number" id="unitPrice" min="1" max="1000000" placeholder="例: 5000" required>
     	<button type="submit">シミュレーションする</button>
   	</form>
-  <div id="sim-result">
-  <div style="margin-top:2em; text-align:center;">
+  <div id="sim-result"></div>
+  <div id="consult-support" class="consult-support-block" style="margin-top:2em; text-align:center;">
   	<strong>さらに最適な広告運用をご希望の方へ</strong><br>
   	<a href="contact.html" class="consult-btn" style="display:inline-block; margin:1em auto; background:#00796b; color:#fff; padding:0.8em 2em; border-radius:7px; font-size:1.2em; text-decoration:none;">具体的に相談する</a>
   	<div style="font-size:0.95em; color:#888; margin-top:0.7em;">
