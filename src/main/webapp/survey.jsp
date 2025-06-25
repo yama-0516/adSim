@@ -6,6 +6,12 @@
     <title>広告媒体診断</title>
     <link rel="stylesheet" href="style.css">
    <meta name="viewport" content="width=device-width, initial-scale=1">
+   <style>
+  body {
+    margin-left: 16px;
+    margin-right: 16px;
+  }
+</style>
 </head>
 <body>
 <div class="container">

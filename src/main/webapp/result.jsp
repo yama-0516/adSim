@@ -69,6 +69,11 @@
       .consult-support-block.active {
         display: block;
       }
+      body {
+    margin-left: 5px;
+    margin-right: 5px;
+ 	 }
+      
     </style>
 	<script>
   // CVRのデフォルト値（％）
