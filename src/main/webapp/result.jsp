@@ -6,69 +6,7 @@
     <title>広告媒体提案</title>
     <link rel="stylesheet" href="style.css">
     <style>
-      .simulation-section {
-        margin-top: 2.5em;
-        padding: 2em 1.5em 1em 1.5em;
-        background: #f7fafc;
-        border-radius: 12px;
-        box-shadow: 0 2px 10px rgba(50,80,120,0.06);
-      }
-      .simulation-section h2 {
-        text-align: center;
-        color: #00796b;
-        font-size: 1.3em;
-        margin-bottom: 1.3em;
-      }
-      .simulation-section label {
-        font-weight: bold;
-        color: #00796b;
-        margin-top: 0.7em;
-        display: block;
-      }
-      .simulation-section input[type="number"] {
-        width: 100%;
-        padding: 0.6em;
-        border-radius: 5px;
-        border: 1px solid #bfc3d9;
-        margin-bottom: 1em;
-        font-size: 1em;
-        background: #fff;
-      }
-      .simulation-annotation {
-        font-size: 0.97em;
-        color: #7b7c90;
-        margin-bottom: 1em;
-        margin-left: 1em;
-      }
-      .simulation-result {
-        background: #eaf7f0;
-        border-radius: 7px;
-        padding: 1em;
-        margin-top: 1em;
-        color: #115342;
-        text-align: center;
-      }
-      .emphasize-main {
-        font-size: 1.5em;
-        color: #00796b;
-        font-weight: bold;
-        display: block;
-        margin: 0.3em 0 0.1em 0;
-      }
-      .emphasize-label {
-        font-size: 1em;
-        color: #00796b;
-        font-weight: bold;
-        margin-top: 0.5em;
-        display: inline-block;
-      }
 
-      .consult-support-block {
-        display: none;
-      }
-      .consult-support-block.active {
-        display: block;
-      }
       body {
     margin-left: 5px;
     margin-right: 5px;
@@ -185,33 +123,11 @@
     %>
     <a href="Survey">もう一度診断する</a>
 
-    <!-- ▼ シミュレーションセクション ▼ -->
-<div class="simulation-section">
-	<h2>費用対効果シミュレーション</h2>
-	<form onsubmit="runSimulation(event)">
-    	<label>重視する指標</label>
-    	<label>
-		<input type="radio" name="focus" value="impression" onchange="updateCvrNote()"> インプレッション重視
-    	</label>
-    	<label>
-			<input type="radio" name="focus" value="click" onchange="updateCvrNote()"> クリック率重視
-    	</label>
-    	<div id="cvr-note" class="simulation-annotation" style="margin-bottom:1em;">※まず指標を選択してください</div>
-    	<label for="budget">概算予算（円）</label>
-    	<input type="number" id="budget" min="1000" max="100000000" placeholder="例: 50000" required>
-    	<label for="unitPrice">客単価（円） <span class="simulation-annotation"><br>※1回の購入や成約あたりの平均売上金額</span></label>
-    	<input type="number" id="unitPrice" min="1" max="1000000" placeholder="例: 5000" required>
-    	<button type="submit">シミュレーションする</button>
-  	</form>
-  <div id="sim-result"></div>
-  <div id="consult-support" class="consult-support-block" style="margin-top:2em; text-align:center;">
-  	<strong>さらに最適な広告運用をご希望の方へ</strong><br>
-  	<a href="contact.html" class="consult-btn" style="display:inline-block; margin:1em auto; background:#00796b; color:#fff; padding:0.8em 2em; border-radius:7px; font-size:1.2em; text-decoration:none;">具体的に相談する</a>
-  	<div style="font-size:0.95em; color:#888; margin-top:0.7em;">
-    実際の成果は媒体やターゲットによって大きく変動します。<br>
-    あなたに最適な運用方法や媒体選定をアドバイスします！お気軽にご相談ください！
-  </div>
-  </div>
-</div>
+	<% String adType = ((service.AdSuggestionService.SuggestionResult)request.getAttribute("result")).getSuggestion(); %>
+	<a class="custom-button" href="simulation.jsp?adType=<%= java.net.URLEncoder.encode(adType, "UTF-8") %>"
+    style="margin-left: 1em;  background:#E53935; color:#fff; padding:0.5em 1.2em;border-radius:6px text-decoration:none">
+    この広告で費用対効果シミュレーション
+	</a>
+
 </body>
 </html>
