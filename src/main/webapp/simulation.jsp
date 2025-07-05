@@ -81,7 +81,7 @@
         const params = new URLSearchParams(window.location.search);
         return params.get("adType") || "Google広告";
       }
-      // 媒体ごとの平均値
+      // 媒体ごとの想定値
 	const MEDIA_DATA = {
 		"Google広告":   { ctr: 0.015, cpm: 800,  cpc: 120, cvr_click: 2.5, cvr_impression: 0.2 },
 		"Yahoo!広告":   { ctr: 0.013, cpm: 850,  cpc: 130, cvr_click: 2.0, cvr_impression: 0.18 },
@@ -94,7 +94,6 @@
 
       function onMediaChange(radio) {
         selectedMedia = radio.value;
-        // 必要なら入力値リセットや注釈更新
         updateCvrNote();
       }
 
@@ -107,6 +106,12 @@
           }
         }
         return null;
+      }
+
+      function calculateRevenueAndROI(conversionCount, unitPrice, cost) {
+          const revenue = conversionCount * unitPrice;
+          const roi = cost > 0 ? (revenue / cost).toFixed(2) : "0.00";
+          return { revenue, roi };
       }
 
       function runSimulation(event) {
@@ -132,7 +137,7 @@
         var unitPrice = parseInt(unitPriceInput.value, 10);
         var media = MEDIA_DATA[selectedMedia];
 
-        // 媒体ごとの平均値利用
+        // 媒体ごとの想定値利用
         var impressions = 0;
         var clicks = 0;
         if (focus.value === "impression") {
@@ -174,8 +179,7 @@
         // 初期表示時に診断からの媒体をセット
         const adType = getAdTypeFromQuery();
         if (MEDIA_DATA[adType]) selectedMedia = adType;
-        document.getElementById("ad-type").textContent = selectedMedia;
-        // ラジオボタンもupdate
+        document.getElementById("ad-type").textContent = selectedMedia
       };
     </script>
 </head>
@@ -198,7 +202,7 @@
 	<label>重視する指標</label>
 	<label><input type="radio" name="focus" value="impression" onchange="updateCvrNote()"> インプレッション重視</label>
 	<label><input type="radio" name="focus" value="click" onchange="updateCvrNote()"> クリック率重視</label>
-	<div id="cvr-note" class="simulation-annotation" style="margin-bottom:1em;">※まず指標を選択してください</div><br>
+	<div id="cvr-note" class="simulation-annotation" style="margin-bottom:1em;">※まず指標を選択してください</div>
 	<label for="budget">概算予算（円）</label>
 	<input type="number" id="budget" min="1000" max="100000000" placeholder="例: 50000" required>
 	<label for="unitPrice">客単価（円） <span class="simulation-annotation"><br>※1回の購入や成約あたりの平均売上金額</span></label>
