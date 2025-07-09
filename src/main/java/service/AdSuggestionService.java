@@ -33,7 +33,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "YouTube広告やInstagram広告が効果的です。",
                 "エンタメコンテンツの消費は短尺動画に集中しており、YouTube ShortsやInstagramが強い影響力を持っています。",
-                Arrays.asList("https://tam-tamlo.com/en/319") // YouTube広告資料URL")
+                Arrays.asList("https://www.cyberagent.co.jp/news/detail/id=31459") // YouTube広告資料URL)
             );
         }
         
@@ -49,7 +49,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "YouTube広告とTwitter広告が効果的です。",
                 "ゲーム分野は動画やレビューが重視され、YouTubeでのプレイ動画視聴が一般的です。また、速報性のある情報発信にはTwitterも有効です。",
-                Arrays.asList("https://www.famitsu.com/news/202203/04253214.html")
+                Arrays.asList("https://sienca.jp/blog/advertising/youtube-trend/\n")
             );
         }
         
@@ -57,7 +57,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "TikTok広告やYouTube広告がオススメです。",
                 "エンタメコンテンツの消費は短尺動画に集中しており、TikTokやYouTube Shortsが強い影響力を持っています。",
-                Arrays.asList("https://www.marke-media.net/tiktok-youth/")
+                Arrays.asList("https://www.cyberagent.co.jp/news/detail/id=31459")
             );
         }
         
@@ -65,7 +65,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "Instagram広告が特に効果的です。",
                 "美容系コンテンツはビジュアル訴求が命で、Instagramは写真・動画ベースの広告が非常に有効です。",
-                Arrays.asList("https://www.japanbuzz.info/top-10-japanese-food-cooking-influencers/\n")
+                Arrays.asList("https://assist-all.co.jp/column/instagram/20250605-4932/?utm_source=chatgpt.com")
             );
         }
         
@@ -74,7 +74,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "Instagram広告やLINE広告が適しています。",
                 "女性のファッション関心層はInstagramやLINEを利用する割合が高く、視覚的な訴求が有効です。",
-                Arrays.asList("https://www.statista.com/statistics/972939/japan-instagram-user-gender/") // Statista Instagram demographics Japan
+                Arrays.asList("https://assist-all.co.jp/column/instagram/20250605-4932/?utm_source=chatgpt.com") // Statista Instagram demographics Japan
             );
         }
 
@@ -82,7 +82,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "YouTube広告やLinkedIn広告がオススメです。",
                 "ビジネス関心層はYouTubeでビジネス系動画やLinkedInで情報収集する傾向が強いため、両媒体が有効です。",
-                Arrays.asList("https://jp.linkedin.com/company/linkedin-japan") // LinkedIn公式
+                Arrays.asList("https://directsourcing-lab.com/blog/advertisement/linkedin-ad-type/?utm_source=chatgpt.com" , "https://jp.linkedin.com/company/linkedin-japan") // LinkedIn公式
             );
         }
 
@@ -90,7 +90,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "LINE広告やFacebook広告が効果的です。",
                 "60代以上はLINEやFacebookの利用率が高く、スマートフォンでの情報収集が主流となっています。",
-                Arrays.asList("https://www.tokyomarketing.net/full-guide-to-line-digital-marketing-in-japan/" , "https://nextlevel.global/blog/2024/12/19/how-to-use-line-for-marketing-insights-for-engaging-japans-most-connected-audience/") // NRI シニア層のSNS利用
+                Arrays.asList("https://www.nissinko.com/tips/720/" , "https://loycus.jp/line-marketing/line-is-the-best-for-senior-marketing/") // NRI シニア層のSNS利用
             );
         }
         
@@ -98,7 +98,7 @@ public class AdSuggestionService {
             return new SuggestionResult(
                 "Instagram広告やLINE広告が特におすすめです。",
                 "グルメ分野は視覚的な訴求力が重要で、Instagramでの写真・動画展開や、LINEを使ったクーポン・再訪促進が効果的です。",
-                Arrays.asList("https://www.sbpayment.jp/solution/line_ads/column/20220221_001/")
+                Arrays.asList("https://assist-all.co.jp/column/instagram/20250605-4932/?utm_source=chatgpt.com")
             );
         }
 
