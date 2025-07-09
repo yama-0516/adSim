@@ -17,7 +17,7 @@
 <div class="container">
     <h1>広告媒体 診断フォーム</h1>
     <form action="Survey" method="post">
-        <label for="ageGroup">年齢層</label>
+        <label for="ageGroup">ターゲットの年齢層</label>
         <select id="ageGroup" name="ageGroup" required>
             <option value="">選択してください</option>
             <option value="10代">10代</option>
@@ -27,14 +27,14 @@
             <option value="50代">50代</option>
             <option value="60代以上">60代以上</option>
         </select>
-        <label for="gender">性別</label>
+        <label for="gender">ターゲットの性別</label>
         <select id="gender" name="gender" required>
             <option value="">選択してください</option>
             <option value="男性">男性</option>
             <option value="女性">女性</option>
             <option value="どちらも">どちらも</option>
         </select>
-        <label for="interest">興味・関心</label>
+        <label for="interest">広告する業種概要、ターゲットの関心</label>
         <select id="interest" name="interest" required>
             <option value="">選択してください</option>
             <option value="ファッション">ファッション</option>

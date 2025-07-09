@@ -83,12 +83,14 @@
       }
       // 媒体ごとの想定値
 	const MEDIA_DATA = {
-		"Google広告":   { ctr: 0.015, cpm: 800,  cpc: 120, cvr_click: 2.5, cvr_impression: 0.2 },
+		"YouTube広告":  { ctr: 0.008, cpm:1000,  cpc: 125, cvr_click: 2.2, cvr_impression: 0.18 },
+		"Google広告":   { ctr: 0.015, cpm: 800,  cpc: 120, cvr_click: 2.5, cvr_impression: 0.20 },
 		"Yahoo!広告":   { ctr: 0.013, cpm: 850,  cpc: 130, cvr_click: 2.0, cvr_impression: 0.18 },
 		"Facebook広告": { ctr: 0.010, cpm: 700,  cpc: 150, cvr_click: 2.0, cvr_impression: 0.15 },
 		"Instagram広告":{ ctr: 0.012, cpm: 900,  cpc: 160, cvr_click: 1.5, cvr_impression: 0.12 },
 		"LINE広告":     { ctr: 0.009, cpm: 600,  cpc: 170, cvr_click: 1.3, cvr_impression: 0.10 },
 		"Twitter広告":  { ctr: 0.008, cpm: 650,  cpc: 180, cvr_click: 1.0, cvr_impression: 0.09 }
+		
 	};
       let selectedMedia = "Google広告";
 
@@ -192,6 +194,7 @@
     <form onsubmit="runSimulation(event)">
 	<div>
 		<label>媒体を選択：</label>
+		<label><input type="radio" name="media" value="YouTube広告" checked onchange="onMediaChange(this)"> YouTube広告</label>
 		<label><input type="radio" name="media" value="Google広告" checked onchange="onMediaChange(this)"> Google広告</label>
 		<label><input type="radio" name="media" value="Yahoo!広告" onchange="onMediaChange(this)"> Yahoo!広告</label>
 		<label><input type="radio" name="media" value="Facebook広告" onchange="onMediaChange(this)"> Facebook広告</label>
