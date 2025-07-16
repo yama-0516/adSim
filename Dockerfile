@@ -1,11 +1,16 @@
-# 公式のTomcatイメージをベースにする（Java 21対応）
-FROM tomcat:10-jdk21
 
-# WARファイルをTomcatのwebappsディレクトリにコピー
-COPY ROOT.war /usr/local/tomcat/webapps/ROOT.war
+FROM gradle:jdk17 AS builder
 
-# 必要に応じてポートを公開（RenderなどPaaSの場合は特に8080）
+WORKDIR /app
+
+COPY . .
+
+RUN gradle clean build -x test
+
+FROM tomcat:10-jdk21-temurin
+
+COPY --from=builder /app/build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
+
 EXPOSE 8080
 
-# Tomcatを起動
 CMD ["catalina.sh", "run"]
