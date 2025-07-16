@@ -50,5 +50,7 @@
         <input type="submit" value="診断する">
     </form>
 </div>
+
+<jsp:include page="footer.jsp" />
 </body>
 </html>

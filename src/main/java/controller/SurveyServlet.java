@@ -51,5 +51,8 @@ public class SurveyServlet extends HttpServlet {
         // 結果画面へフォワード
         RequestDispatcher dispatcher = request.getRequestDispatcher("result.jsp");
         dispatcher.forward(request, response);
+        
+        
     }
-}
+    
+ }

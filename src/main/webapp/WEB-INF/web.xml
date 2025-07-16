@@ -12,4 +12,13 @@
         <servlet-name>SurveyServlet</servlet-name>
         <url-pattern>/Survey</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>AiChatServlet</servlet-name>
+        <servlet-class>controller.AiChatServlet</servlet-class>
+    </servlet>
+
+	<servlet-mapping>
+    <servlet-name>AiChatServlet</servlet-name>
+    <url-pattern>/AiChat</url-pattern>
+	</servlet-mapping>
 </web-app>

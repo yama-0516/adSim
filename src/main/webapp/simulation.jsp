@@ -221,5 +221,6 @@
     あなたに最適な運用方法や媒体選定をアドバイスします！お気軽にご相談ください！
   </div>
   </div>
+  <jsp:include page="footer.jsp" />
 </body>
 </html>
