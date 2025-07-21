@@ -144,7 +144,7 @@
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ message: message })
+            body: JSON.stringify({ message: message, diagnosisInfo: window.diagnosisInfo })
           });
 
           console.log('AIチャットレスポンス:', response.status, response.statusText);
@@ -159,14 +159,28 @@
           // ローディングを削除
           messagesContainer.removeChild(loadingDiv);
 
-          // AI回答を表示
-          addMessage('ai', data.reply);
+          // タイピング風エフェクトでAI回答を表示
+          await typeMessage('ai', data.reply);
         } catch (error) {
           console.error('AIチャットエラー:', error);
           messagesContainer.removeChild(loadingDiv);
           addMessage('ai', '申し訳ございません。エラーが発生しました。\n\nエラー詳細: ' + error.message + '\n\n解決方法:\n1. ページを再読み込みしてください\n2. しばらく時間をおいて再度お試しください\n3. 管理者にお問い合わせください');
         } finally {
           sendButton.disabled = false;
+        }
+      }
+
+      // タイピング風エフェクト
+      async function typeMessage(type, content) {
+        const messagesContainer = document.getElementById('chat-messages');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${type}`;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        for (let i = 0; i < content.length; i++) {
+          messageDiv.textContent += content[i];
+          await new Promise(r => setTimeout(r, 18)); // 速さは調整可
+          messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
       }
 

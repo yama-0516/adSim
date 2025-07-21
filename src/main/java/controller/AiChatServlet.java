@@ -27,14 +27,27 @@ public class AiChatServlet extends HttpServlet {
         try (BufferedReader reader = request.getReader()) {
             JsonObject jsonRequest = JsonParser.parseReader(reader).getAsJsonObject();
             String userMessage = jsonRequest.get("message").getAsString();
+            JsonObject diagnosisInfo = jsonRequest.has("diagnosisInfo") ? jsonRequest.getAsJsonObject("diagnosisInfo") : null;
 
             if (userMessage == null || userMessage.trim().isEmpty()) {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                response.getWriter().write("{\"reply\":\"メッセージが空です。\"}");
+                response.getWriter().write("{\"reply\":\" [31mメッセージが空です。\"}");
                 return;
             }
 
-            String aiReply = callGeminiAPI(userMessage);
+            // 診断情報をAIプロンプトに含める
+            StringBuilder prompt = new StringBuilder();
+            prompt.append("あなたは広告診断アプリのAIアシスタントです。\n");
+            prompt.append("ユーザーの診断情報を参考に、要点だけ簡潔に（100文字以内・箇条書き推奨）日本語で回答してください。\n");
+            if (diagnosisInfo != null) {
+                prompt.append("【診断情報】\n");
+                if (diagnosisInfo.has("suggestion")) prompt.append("おすすめ媒体: ").append(diagnosisInfo.get("suggestion").getAsString()).append("\n");
+                if (diagnosisInfo.has("reason")) prompt.append("理由: ").append(diagnosisInfo.get("reason").getAsString()).append("\n");
+                if (diagnosisInfo.has("evidenceUrls")) prompt.append("参考URL: ").append(diagnosisInfo.get("evidenceUrls").toString()).append("\n");
+            }
+            prompt.append("【ユーザー質問】\n").append(userMessage);
+
+            String aiReply = callGeminiAPI(prompt.toString());
 
             JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("reply", aiReply);
