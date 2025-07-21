@@ -20,8 +20,11 @@ java {
 
 war {
     archiveFileName = 'ROOT.war'
-    destinationDirectory = file('C:/pleiades/2025-03/tomcat/tomcat10.1.42/webapps')
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
+    if (project.hasProperty('localDeploy')) {
+        destinationDirectory = file('C:/pleiades/2025-03/tomcat/tomcat10.1.42/webapps')
+    }
 }
 
 sourceSets {
