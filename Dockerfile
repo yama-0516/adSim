@@ -5,6 +5,8 @@ WORKDIR /app
 
 COPY . .
 
+RUN chmod +x gradlew
+
 RUN ./gradlew clean war -x test
 
 FROM tomcat:11-jdk21-temurin
