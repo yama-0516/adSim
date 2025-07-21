@@ -5,7 +5,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN gradle clean build -x test
+RUN gradle clean war -x test
 
 FROM tomcat:11-jdk21-temurin
 
