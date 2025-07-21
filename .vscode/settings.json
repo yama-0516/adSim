@@ -1,0 +1,26 @@
+{
+  "files.encoding": "utf8",
+
+  // 日本語環境向け（Japanese Language Pack を使っているなら特に問題なし）
+  "editor.renderWhitespace": "all",
+
+  // Java拡張の設定
+  "java.project.sourcePaths": [
+    "src/main/java"
+  ],
+  "java.project.outputPath": "build/classes/java/main",
+  "java.configuration.updateBuildConfiguration": "automatic",
+  "java.import.gradle.wrapper.enabled": true,
+  
+  // 保存時に自動整形
+  "editor.formatOnSave": true,
+
+  // デバッグ設定に関連するもの（Debugger for Javaに準じる）
+  "java.debug.settings.hotCodeReplace": "auto",
+
+  // Community Server Connectors の設定（詳細不明なのでデフォルト設定のままで良いかも）
+  // 必要に応じて追記してください
+
+  // 拡張機能の日本語化対応（既に入れてるなら追加設定不要）
+  "locale": "ja"
+}

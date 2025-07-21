@@ -7,15 +7,14 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class AiChatServlet extends HttpServlet {
 
@@ -23,15 +22,19 @@ public class AiChatServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("application/json; charset=UTF-8");
-        
-        System.out.println("POSTリクエスト受信");
+        System.out.println("AIチャットリクエスト受信 (Gemini)");
 
         try (BufferedReader reader = request.getReader()) {
             JsonObject jsonRequest = JsonParser.parseReader(reader).getAsJsonObject();
             String userMessage = jsonRequest.get("message").getAsString();
 
-            // OpenAIに送信 → 返答取得（ここは別メソッドで実装してください）
-            String aiReply = callOpenAIAPI(userMessage);
+            if (userMessage == null || userMessage.trim().isEmpty()) {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().write("{\"reply\":\"メッセージが空です。\"}");
+                return;
+            }
+
+            String aiReply = callGeminiAPI(userMessage);
 
             JsonObject jsonResponse = new JsonObject();
             jsonResponse.addProperty("reply", aiReply);
@@ -44,81 +47,105 @@ public class AiChatServlet extends HttpServlet {
         }
     }
 
-    private String callOpenAIAPI(String message) throws IOException {
-        String apiKey = System.getenv("OPENAI_API_KEY");
-        System.out.println("環境変数 OPENAI_API_KEY = " + apiKey);
+    private String callGeminiAPI(String message) throws IOException {
+        String apiKey = System.getenv("GEMINI_API_KEY");
+        System.out.println("=== Geminiチャットデバッグ情報 ===");
+        System.out.println("APIキー設定状況: " + (apiKey != null ? "設定済み" : "未設定"));
+        if (apiKey != null) {
+            System.out.println("APIキー長: " + apiKey.length() + "文字");
+            System.out.println("APIキー先頭: " + apiKey.substring(0, Math.min(10, apiKey.length())) + "...");
+        }
         if (apiKey == null || apiKey.isEmpty()) {
-            throw new IllegalStateException("OpenAI APIキーが設定されていません。");
+            System.out.println("エラー: Gemini APIキーが設定されていません");
+            return "申し訳ございません。AI機能が現在利用できません。環境設定をご確認ください。\n\n設定方法:\n1. CMDで「set GEMINI_API_KEY=your_api_key」を実行\n2. サーバーを再起動してください。";
         }
 
         System.out.println("送信メッセージ: " + message);
-        
-        int maxRetries = 3;
-        int retryDelayMillis = 2000; // 2秒待つ
 
-        for (int attempt = 1; attempt <= maxRetries; attempt++) {
-            HttpURLConnection conn = null;
-            try {
-                URL url = new URL("https://api.openai.com/v1/chat/completions");
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("POST");
-                conn.setRequestProperty("Content-Type", "application/json");
-                conn.setRequestProperty("Authorization", "Bearer " + apiKey);
-                conn.setDoOutput(true);
+        String endpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + apiKey;
+        HttpURLConnection conn = null;
+        try {
+            URL url = new URL(endpoint);
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setDoOutput(true);
+            conn.setConnectTimeout(10000); // 10秒
+            conn.setReadTimeout(30000);    // 30秒
 
-                // リクエストボディ作成
-                JsonObject requestBody = new JsonObject();
-                requestBody.addProperty("model", "gpt-3.5-turbo");
+            // Gemini用リクエストボディ
+            JsonObject requestBody = new JsonObject();
+            JsonArray contents = new JsonArray();
+            JsonObject content = new JsonObject();
+            JsonArray parts = new JsonArray();
+            JsonObject part = new JsonObject();
+            part.addProperty("text", message);
+            parts.add(part);
+            content.add("parts", parts);
+            contents.add(content);
+            requestBody.add("contents", contents);
 
-                JsonArray messages = new JsonArray();
-                JsonObject userMsg = new JsonObject();
-                userMsg.addProperty("role", "user");
-                userMsg.addProperty("content", message);
-                messages.add(userMsg);
-                requestBody.add("messages", messages);
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.toString().getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
 
-                try (OutputStream os = conn.getOutputStream()) {
-                    byte[] input = requestBody.toString().getBytes("utf-8");
-                    os.write(input, 0, input.length);
-                }
+            int statusCode = conn.getResponseCode();
+            System.out.println("Gemini APIレスポンスコード: " + statusCode);
 
-                int statusCode = conn.getResponseCode();
+            if (statusCode >= 400) {
+                String errorResponse = readErrorResponse(conn);
+                System.out.println("Gemini APIエラー " + statusCode + ": " + errorResponse);
+                return "申し訳ございません。Gemini APIでエラーが発生しました。\n\n" + errorResponse;
+            }
 
-                if (statusCode == 429) {
-                    System.out.println("429 Too Many Requests - 再試行中...");
-                    Thread.sleep(retryDelayMillis); // リトライまで待機
-                    continue; // リトライ
-                } else if (statusCode >= 400) {
-                    throw new IOException("APIエラー: " + statusCode);
-                }
+            String responseBody = readResponse(conn);
+            System.out.println("Geminiレスポンス: " + responseBody);
 
-                // レスポンス読み込み
-                try (BufferedReader br = new BufferedReader(
-                        new InputStreamReader(conn.getInputStream(), "utf-8"))) {
-                    StringBuilder response = new StringBuilder();
-                    String line;
-                    while ((line = br.readLine()) != null) {
-                        response.append(line.trim());
-                    }
-                    
-                    System.out.println("OpenAIレスポンス: " + response.toString());
-
-                    JsonObject json = JsonParser.parseString(response.toString()).getAsJsonObject();
-                    return json.getAsJsonArray("choices")
-                               .get(0).getAsJsonObject()
-                               .getAsJsonObject("message")
-                               .get("content").getAsString();
-                }
-
-            } catch (IOException | InterruptedException e) {
-                if (attempt == maxRetries) {
-                    throw new IOException("OpenAI API呼び出しが失敗しました（リトライ済）", e);
-                }
-            } finally {
-                if (conn != null) conn.disconnect();
+            JsonObject json = JsonParser.parseString(responseBody).getAsJsonObject();
+            JsonArray candidates = json.getAsJsonArray("candidates");
+            if (candidates == null || candidates.size() == 0) {
+                return "申し訳ございません。Gemini APIから有効なレスポンスが返されませんでした。";
+            }
+            JsonObject contentObj = candidates.get(0).getAsJsonObject().getAsJsonObject("content");
+            if (contentObj == null) {
+                return "申し訳ございません。Gemini APIのレスポンス形式が不正です。";
+            }
+            JsonArray partsArr = contentObj.getAsJsonArray("parts");
+            if (partsArr == null || partsArr.size() == 0) {
+                return "申し訳ございません。Gemini APIのレスポンスに回答が含まれていません。";
+            }
+            String result = partsArr.get(0).getAsJsonObject().get("text").getAsString();
+            System.out.println("Gemini AI回答: " + result);
+            return result;
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
             }
         }
+    }
 
-        throw new IOException("OpenAI API呼び出しに失敗しました（全リトライ失敗）");
+    private String readResponse(HttpURLConnection conn) throws IOException {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+            return response.toString();
+        }
+    }
+
+    private String readErrorResponse(HttpURLConnection conn) throws IOException {
+        try (BufferedReader br = new BufferedReader(
+                new InputStreamReader(conn.getErrorStream(), "utf-8"))) {
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                response.append(line);
+            }
+            return response.toString();
+        }
     }
 }

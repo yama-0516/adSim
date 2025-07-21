@@ -7,7 +7,7 @@ COPY . .
 
 RUN gradle clean build -x test
 
-FROM tomcat:10-jdk21-temurin
+FROM tomcat:11-jdk21-temurin
 
 COPY --from=builder /app/build/libs/*.war /usr/local/tomcat/webapps/ROOT.war
 

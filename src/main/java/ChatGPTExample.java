@@ -5,7 +5,7 @@ import java.net.http.HttpResponse;
 
 public class ChatGPTExample {
     public static void main(String[] args) throws Exception {
-        // 環境変数からAPIキーを取得
+
         String apiKey = System.getenv("OPENAI_API_KEY");
         if (apiKey == null || apiKey.isEmpty()) {
             System.err.println("ERROR: 環境変数OPENAI_API_KEYが設定されていません。");

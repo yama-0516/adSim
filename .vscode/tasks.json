@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "WARを作成する",
+      "type": "shell",
+      "command": "${workspaceFolder}\\gradlew.bat",
+      "args": ["war"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": "build",
+      "problemMatcher": []
+    },
+    {
+      "label": "Tomcatにコピーする",
+      "type": "shell",
+      "command": "cmd",
+      "args": [
+        "/c",
+        "copy",
+        "${workspaceFolder}\\build\\libs\\*.war",
+        "C:\\pleiades\\2025-03\\tomcat\\apache-tomcat-11.0.0-M6\\webapps\\"
+      ],
+      "dependsOn": "WARを作成する",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
