@@ -301,3 +301,25 @@ a:hover {
   }
 
 }
+
+#chatbot {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(6px);
+}
+
+#chatHistory {
+  background: transparent !important;
+}
+
+.chat-input .chat-input-box {
+  width: 100%;
+  min-height: 2.5em;
+  padding: 0.7em;
+  border: 1px solid #bfc3d9;
+  border-radius: 5px;
+  font-size: 1em;
+  background: #fff;
+  box-sizing: border-box;
+  margin-bottom: 0;
+  flex: 1;
+}

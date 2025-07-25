@@ -8,7 +8,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
 import model.SurveyForm;
 import service.AdSuggestionService;
 
@@ -45,7 +44,7 @@ public class SurveyServlet extends HttpServlet {
         request.setAttribute("suggestionResult", result);
 
         // URLエンコード済みの広告タイプを渡す（必要なら）
-        String encodedAdType = URLEncoder.encode(result.getSuggestion(), "UTF-8");
+        String encodedAdType = URLEncoder.encode(result.getMediaId(), "UTF-8");
         request.setAttribute("encodedAdType", encodedAdType);
 
         // 結果画面へフォワード

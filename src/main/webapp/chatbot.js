@@ -22,7 +22,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 });
                 const data = await response.json();
 
-                chatHistory.innerHTML += `<div><b>AI:</b> ${data.reply ?? '(AI応答未取得)'}</div>`;
+                const aiBox = document.createElement('div');
+                aiBox.innerHTML = `<b>AI:</b> `;
+                chatHistory.appendChild(aiBox);
+                typeText(data.reply ?? '(AI応答未取得)', aiBox);
+
                 chatHistory.scrollTop = chatHistory.scrollHeight;
             } catch (err) {
                 chatHistory.innerHTML += `<div style="color:red;">通信エラーが発生しました。</div>`;
@@ -30,4 +34,12 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
     });
+    async function typeText(text, targetElement) {
+        for (let i = 0; i < text.length; i++) {
+            targetElement.innerHTML += text[i];
+            await new Promise(resolve => setTimeout(resolve, 30));
+            targetElement.scrollIntoView({ behavior: "auto", block: "end" });
+        }
+        chatHistory.scrollTop = chatHistory.scrollHeight;
+    }
 });

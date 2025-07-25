@@ -237,8 +237,7 @@
         <div>
           <label>媒体を選択：</label>
           <label><input type="radio" name="media" value="YouTube広告" onchange="onMediaChange(this)"> YouTube広告</label>
-          <label><input type="radio" name="media" value="Google広告" checked onchange="onMediaChange(this)">
-            Google広告</label>
+          <label><input type="radio" name="media" value="Google広告" onchange="onMediaChange(this)"> Google広告</label>
           <label><input type="radio" name="media" value="Yahoo!広告" onchange="onMediaChange(this)"> Yahoo!広告</label>
           <label><input type="radio" name="media" value="Facebook広告" onchange="onMediaChange(this)"> Facebook広告</label>
           <label><input type="radio" name="media" value="Instagram広告" onchange="onMediaChange(this)">
@@ -263,7 +262,7 @@
         <h3>🤖 AI広告コンサルタント</h3>
         <div id="chat-messages" class="chat-messages"></div>
         <div class="chat-input">
-          <input type="text" id="chat-input" placeholder="広告運用について質問してください..." onkeypress="handleChatKeyPress(event)">
+          <input type="text" id="chat-input" class="chat-input-box" placeholder="メッセージを入力..." />
           <button id="send-button" onclick="sendChatMessage()">送信</button>
         </div>
       </div>

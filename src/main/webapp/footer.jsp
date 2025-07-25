@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
   <div id="chatbot">
     <div id="chatHistory"></div>
-    <input id="chatInput" type="text" placeholder="メッセージを入力..." autocomplete="off" />
+    <input id="chatInput" type="text" placeholder="メッセージを入力..." autocomplete="off"
+      onkeydown="handleChatKeyPress(event)" />
   </div>
   <button id="toggleChat">チャット</button>
 
@@ -18,7 +19,8 @@
       width: 300px;
       height: 350px;
       border: 1px solid #ccc;
-      background: #fff;
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(6px);
       display: none;
       flex-direction: column;
       box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);

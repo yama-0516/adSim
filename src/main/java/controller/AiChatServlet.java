@@ -38,7 +38,12 @@ public class AiChatServlet extends HttpServlet {
             // 診断情報をAIプロンプトに含める
             StringBuilder prompt = new StringBuilder();
             prompt.append("あなたは広告診断アプリのAIアシスタントです。\n");
-            prompt.append("ユーザーの診断情報を参考に、要点だけ簡潔に（100文字以内・箇条書き推奨）日本語で回答してください。\n");
+            prompt.append("ユーザーの診断情報を参考に、簡潔かつ分かりやすく日本語で答えてください。\n");
+            prompt.append("できるだけ箇条書きで、100文字以内を推奨しますが、必要なら少し超えても構いません。\n");
+            prompt.append("余計な挨拶は不要ですが、機械のような話し方ではなく親しみやすい雰囲気で答えてください。\n");
+            prompt.append("広告の専門家として、根拠やデータを交えて論理的に説明してください。\n");
+            prompt.append("専門用語の連発は避け、可読性が下がるので、＊は使わないでください。\n");
+            prompt.append("出来るだけ広告診断アプリの結果を尊重するような回答を心がけてください。\n");
             if (diagnosisInfo != null) {
                 prompt.append("【診断情報】\n");
                 if (diagnosisInfo.has("suggestion")) prompt.append("おすすめ媒体: ").append(diagnosisInfo.get("suggestion").getAsString()).append("\n");
@@ -47,6 +52,9 @@ public class AiChatServlet extends HttpServlet {
             }
             prompt.append("【ユーザー質問】\n").append(userMessage);
 
+            System.out.println("====ここから====");
+            System.out.println("AI送信プロンプト: " + prompt.toString());
+            System.out.println("====ここまで====");
             String aiReply = callGeminiAPI(prompt.toString());
 
             JsonObject jsonResponse = new JsonObject();
