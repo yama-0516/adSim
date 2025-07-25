@@ -59,6 +59,14 @@ input[type="submit"] {
   transition: background 0.3s;
 }
 
+#send-button {
+  width: auto !important;
+  min-width: 80px;
+  padding: 0.7em 1.5em;
+  margin: 0;
+  display: inline-block;
+}
+
 button:hover,
 input[type="submit"]:hover {
   background: linear-gradient(90deg, #5d5dc7, #5f8ed9, #6ad1b9);
@@ -214,15 +222,9 @@ a:hover {
 
 .chat-input {
   display: flex;
+  align-items: center;
   gap: 0.5em;
-}
-
-.chat-input input {
-  flex: 1;
-  padding: 0.7em;
-  border: 1px solid #bfc3d9;
-  border-radius: 5px;
-  font-size: 1em;
+  margin-top: 1em;
 }
 
 .chat-input button {
@@ -311,15 +313,27 @@ a:hover {
   background: transparent !important;
 }
 
-.chat-input .chat-input-box {
-  width: 100%;
+.chat-input-box {
+  flex: 1;
   min-height: 2.5em;
+  max-height: 2.5em;
   padding: 0.7em;
   border: 1px solid #bfc3d9;
   border-radius: 5px;
   font-size: 1em;
   background: #fff;
   box-sizing: border-box;
-  margin-bottom: 0;
-  flex: 1;
+  margin-bottom: 0 !important;
+  width: auto !important;
+}
+
+input[type="text"]:not(.chat-input-box),
+select {
+  width: 100%;
+  padding: 0.7em;
+  border: 1px solid #bfc3d9;
+  border-radius: 5px;
+  font-size: 1em;
+  margin-bottom: 1em;
+  background: #f9fafe;
 }
